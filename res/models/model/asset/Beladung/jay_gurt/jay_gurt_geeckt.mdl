@@ -1,0 +1,36 @@
+function data()
+return {
+	boundingInfo = {
+		bbMax = { 7.9703073501587, 1.3893460035324, 3.5038697719574, },
+		bbMin = { 7.9083590507507, -1.3893460035324, 1.2056740522385, },
+	},
+	collider = {
+		params = {
+			halfExtents = { 0.030974149703979, 1.3893460035324, 1.1490979194641, },
+		},
+		transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+		type = "BOX",
+	},
+	lods = {
+		{
+			node = {
+				children = {
+					{
+						materials = { "asset/beladung/jay_gurt/jay_gurt_geeckt/Stahl.mtl", },
+						mesh = "asset/beladung/jay_gurt/jay_gurt_geeckt/jay_gurt_geeckt_lod0.msh",
+						name = "jay_gurt_geeckt",
+						transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+					},
+				},
+				name = "RootNode",
+				transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+			},
+			static = false,
+			visibleFrom = 0,
+			visibleTo = 577.10333251953,
+		},
+	},
+	metadata = { },
+	version = 1,
+}
+end

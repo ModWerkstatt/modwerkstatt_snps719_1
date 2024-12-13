@@ -1,0 +1,36 @@
+function data()
+return {
+	boundingInfo = {
+		bbMax = { -9.2235307693481, 1.3393162488937, 3.4481608867645, },
+		bbMin = { -9.2824659347534, -1.3393162488937, 1.1134384870529, },
+	},
+	collider = {
+		params = {
+			halfExtents = { 0.029467582702637, 1.3393162488937, 1.1673612594604, },
+		},
+		transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+		type = "BOX",
+	},
+	lods = {
+		{
+			node = {
+				children = {
+					{
+						materials = { "vehicle/waggon/modwerkstatt_basis/dg_ba_645.mtl", },
+						mesh = "asset/jay_gurt/jay_gurtEckig/jay_mesh_gurtEckig.001_lod0.msh",
+						name = "jay_mesh_gurtEckig",
+						transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+					},
+				},
+				name = "RootNode",
+				transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+			},
+			static = false,
+			visibleFrom = 0,
+			visibleTo = 551.24548339844,
+		},
+	},
+	metadata = { },
+	version = 1,
+}
+end

@@ -1,0 +1,58 @@
+function data()
+return {
+	en = {
+
+		["mod_name"] = "Snps 719",
+		["mod_desc"] = "The Snps (719) is a 4-axle flat wagon with bogies and fixed, two-metre-high double stanchions, which was specially designed for transporting logs, sawn timber, steel profiles and pipes. A total of 1,960 wagons were produced in series between 1980 and 1984. The stanchions are equipped with lashing devices, while the floor consists of walk-on perforated plates and wooden loading sleepers. From 1998, around 700 wagons were fitted with laminated wooden slats to protect the load and were subsequently registered as Snps-x 719. There are currently 593 Snps-x and 1,364 Snps 719 in the DB AG fleet. Between 1992 and 1994, Cattaneo delivered a series of 100 similar wagons to the SBB, which differed from the DB wagons only in minor details.",
+		["gedreht"] = "(rotated) ",
+		["sound_check"] = "Activate custom sound?",
+		["height"] = "Height",
+		["offset x-axis"] = "Offset x-axis",
+		["ground"] = "Ground",
+		["rail"] = "Rail",
+		["vehicle"] = "Vehicle",
+		["Snps719_desc"] = "Version with long timber, steel beams, planks, or large pipes",
+		["Snps719_desc_2"] = "Version with long timber, steel beams, planks, or short pipes",
+		["Snps719_desc_3"] = "Version with short timber, steel beams, planks or construction material blocks, and short blue pipes",
+		["Snps719_desc_fake"] = "Fake version, always loaded. Load corresponds to the preview image.",
+		["assetVariante_1"] = "Empty",
+		["assetVariante_2"] = "Steel beams",
+		["assetVariante_3"] = "Small wood",
+		["assetVariante_4"] = "Large logs",
+		["assetVariante_5"] = "Planks",
+		["assetVariante_6"] = "Small pipes blue",
+		["assetVariante_7"] = "Small pipes gray",
+		["assetVariante_8"] = "Big Pipes",
+		["assetVariante_9"] = "Wrapped construction material",
+		["snps_fake"] = "Activate Fake Versions?",
+
+
+	},
+	de = {
+
+		["mod_name"] = "Snps 719",
+		["mod_desc"] = "Der Snps (719) ist ein 4-achsiger Flachwagen mit Drehgestellen und festen, zwei Meter hohen Doppelrungen, der speziell für den Transport von Stammholz, Schnittholz, Stahlprofilen und Rohren konzipiert wurde. Zwischen 1980 und 1984 wurden insgesamt 1.960 Wagen in Serie gefertigt. Die Rungen sind mit Verzurrvorrichtungen ausgestattet, während der Boden aus begehbaren Lochblechen und hölzernen Ladeschwellen besteht. Ab 1998 erhielten etwa 700 Wagen Schichtholzleisten zum Schutz der Ladung und wurden anschließend als Snps-x 719 geführt. Derzeit befinden sich 593 Snps-x und 1.364 Snps 719 im Bestand der DB AG. Zwischen 1992 und 1994 lieferte Cattaneo eine Serie von 100 ähnlichen Wagen an die SBB, die sich nur in kleinen Details von den DB-Wagen unterscheiden. ",
+		["gedreht"] = "(gedreht) ",
+		["sound_check"] = "Eigenes Soundset aktivieren?",
+		["height"] = "Höhe",
+		["offset x-axis"] = "Verschub X-Achse",
+		["ground"] = "Boden",
+		["rail"] = "Gleis",
+		["vehicle"] = "Fahrzeug",
+		["Snps719_desc"] = "Version mit Langholz, Stahlträger, Bretter oder großen Rohren",
+		["Snps719_desc_2"] = "Version mit Langholz, Stahlträger, Bretter oder kurzen Rohren",
+		["Snps719_desc_3"] = "Version mit Kurzholz, Stahlträger, Bretter oder Baumaterialblocks und kurzen blauen Rohren",
+		["Snps719_desc_fake"] = "Fake Version , immer beladen. Ladung entspricht dem Vorschaubild.",
+		["assetVariante_1"] = "Empty",
+		["assetVariante_2"] = "Stahlträger",
+		["assetVariante_3"] = "Kleinholz",
+		["assetVariante_4"] = "Große Stämme",
+		["assetVariante_5"] = "Bretter",
+		["assetVariante_6"] = "Rohre klein blau",
+		["assetVariante_7"] = "Rohre klein grau",
+		["assetVariante_8"] = "Große Rohre",
+		["assetVariante_9"] = "Baumaterial abgedeckt",
+		["snps_fake"] = "Fake Versionen aktivieren?",
+	},
+}
+end

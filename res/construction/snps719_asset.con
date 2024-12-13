@@ -1,0 +1,1095 @@
+local transf = require "transf"
+local ParamBuilder = require "parambuilder_v1_1"
+local constructionutil = require "constructionutil"
+
+local positionx = ParamBuilder.Slider(
+    "offsetx", 
+    _("offset x-axis"), 
+    ParamBuilder.rangeSymm(1, 0.01), 
+    1 / 0.01, 
+    _("jrm_param_offsetx_tooltip")
+)
+
+local model_icons = {
+    "ui/models_small/vehicle/waggon/Snps719/snps719_axbenet@2x.tga",
+    "ui/models_small/vehicle/waggon/Snps719/snps719_db1980@2x.tga",
+    "ui/models_small/vehicle/waggon/Snps719/snps719_db1994@2x.tga",
+    "ui/models_small/vehicle/waggon/Snps719/snps719_sbb@2x.tga",
+    "ui/models_small/vehicle/waggon/Snps719/snps719_sbbAlt@2x.tga",
+}
+
+local model_values = {
+    "asset/snps719_axbenet.mdl",
+    "asset/snps719_db1980.mdl",
+    "asset/snps719_db1994.mdl",
+    "asset/snps719_sbb.mdl",
+    "asset/snps719_sbbAlt.mdl",
+}
+
+local cargo_models = {
+    "asset/Beladung/ladung_stahl.mdl",
+    "asset/Beladung/ladung_holz_3.mdl",
+    "asset/Beladung/ladung_holz_2.mdl",
+    "asset/Beladung/ladung_bretter.mdl",
+    "asset/Beladung/ladung_baumaterial_4.mdl",
+    "asset/Beladung/ladung_baumaterial_3.mdl",
+    "asset/Beladung/ladung_baumaterial_1.mdl",
+    "asset/Beladung/ladung_baumaterial_2.mdl",
+	"asset/Beladung/jay_gurt/jay_gurt_geeckt.mdl",
+	"asset/Beladung/jay_gurt/jay_gurt_gerade.mdl", 
+	"asset/Beladung/jay_gurt/jay_gurtBlue.mdl",
+}
+
+local assetmodel = ParamBuilder.IconButton(
+    "type_param", 
+    _("vehicle"), 
+    model_icons, 
+    model_values, 
+    1, 
+    _("jrm_param_type_tooltip")
+)
+
+function data()
+    return {
+        type = "ASSET_TRACK",
+        description = {
+            name = _("mod_name"),
+        },
+        availability = {
+            yearFrom = 1980,
+            yearTo = 0,
+        },
+        buildMode = "MULTI",
+        categories = { "tracks", "jays_mods" },
+        order = -2046867593,
+        skipCollision = true,
+        autoRemovable = false,
+        params = {
+            {
+                key = "position",
+                name = _("height"),
+                uiType = "BUTTON",
+                values = { _("ground"), _("rail") },
+                tooltip = _("height_tooltip"),
+                defaultIndex = 1,
+            },
+            {
+                key = "beladenSnps",
+                name = _("Beladung"),
+                uiType = "BUTTON",
+                values = {
+                    _("assetVariante_1"), _("assetVariante_2"), _("assetVariante_3"),
+                    _("assetVariante_4"), _("assetVariante_5"), _("assetVariante_6"), _("assetVariante_7"), _("assetVariante_8"), _("assetVariante_9")
+                },
+                defaultIndex = 1,
+            },
+            positionx.params,
+            assetmodel.params,
+        },
+
+        updateFn = function(params)
+            local trax = positionx.getValue(params)
+            local height = params.position == 1 and 1.05 or 0
+
+            local result = {
+                models = {},
+            }
+
+            if params.beladenSnps == 0 then
+                local assetValue = assetmodel.getValue(params)
+                if assetValue == "asset/snps719_axbenet.mdl" or
+                   assetValue == "asset/snps719_db1980.mdl" or
+                   assetValue == "asset/snps719_db1994.mdl" or
+                   assetValue == "asset/snps719_sbb.mdl" or
+                   assetValue == "asset/snps719_sbbAlt.mdl" then
+
+                    table.insert(result.models, {
+                        id = assetValue,
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            trax, 0, height, 1
+                        }),
+                    })
+
+                    result.terrainAlignmentLists = {
+                        {
+                            type = "EQUAL",
+                            faces = {},
+                        },
+                    }
+
+                    result.groundFaces = {
+                        {
+                            face = {
+                                {0.01, -0.01}, {0.01, 0.01},
+                                {-0.01, 0.01}, {-0.01, -0.01}
+                            },
+                            modes = {
+                                { type = "FILL", key = "industry_floor.lua" },
+                            },
+                        },
+                    }
+
+                    return result
+                end
+            end
+
+            if params.beladenSnps == 1 then
+                local assetValue = assetmodel.getValue(params)
+                if assetValue == "asset/snps719_axbenet.mdl" or
+                   assetValue == "asset/snps719_db1980.mdl" or
+                   assetValue == "asset/snps719_db1994.mdl" or
+                   assetValue == "asset/snps719_sbb.mdl" or
+                   assetValue == "asset/snps719_sbbAlt.mdl" then
+
+                    table.insert(result.models, {
+                        id = assetValue,
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            trax, 0, height, 1
+                        }),
+                    })
+
+                    table.insert(result.models, {
+                        id = cargo_models[1],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            trax, 0, 1.19 + height, 1
+                        }),
+                    })
+					table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            trax, 0, -0.2 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -2.2599999904633+trax, 0, -0.2 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -4.5199999809265 + trax, 0, -0.2 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -6.7800002098083 + trax, 0, -0.2 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -9.039999961853 + trax, 0, -0.2 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -11.300000190735 + trax, 0, -0.2 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -13.569999694824 + trax, 0, -0.2 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -15.819999694824 + trax, 0, -0.2 + height, 1
+                        }),
+                    })
+					
+
+                    result.terrainAlignmentLists = {
+                        {
+                            type = "EQUAL",
+                            faces = {},
+                        },
+                    }
+
+                    result.groundFaces = {
+                        {
+                            face = {
+                                {0.01, -0.01}, {0.01, 0.01},
+                                {-0.01, 0.01}, {-0.01, -0.01}
+                            },
+                            modes = {
+                                { type = "FILL", key = "industry_floor.lua" },
+                            },
+                        },
+                    }
+
+                    return result
+                end
+            end
+			
+			if params.beladenSnps == 2 then
+                local assetValue = assetmodel.getValue(params)
+                if assetValue == "asset/snps719_axbenet.mdl" or
+                   assetValue == "asset/snps719_db1980.mdl" or
+                   assetValue == "asset/snps719_db1994.mdl" or
+                   assetValue == "asset/snps719_sbb.mdl" or
+                   assetValue == "asset/snps719_sbbAlt.mdl" then
+
+                    table.insert(result.models, {
+                        id = assetValue,
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            trax, 0, height, 1
+                        }),
+                    })
+
+                    table.insert(result.models, {
+                        id = cargo_models[2],
+                        transf = constructionutil.rotateTransf(params, {
+                           0.75, 0, 0, 0, -0, 0.94999998807907, 0, 0, 0, -0, 0.93000000715256, 0, -5.9899997711182 + trax, 0, 2.1099998950958 + height, 1,
+                        }),
+                    })
+					                    table.insert(result.models, {
+                        id = cargo_models[2],
+                        transf = constructionutil.rotateTransf(params, {
+                           0.75, 0, 0, 0, -0, 0.94999998807907, 0, 0, 0, -0, 0.93000000715256, 0, 0.11999999731779 + trax, 0, 2.1099998950958 + height, 1,
+                        }),
+                    })
+					                    table.insert(result.models, {
+                        id = cargo_models[2],
+                        transf = constructionutil.rotateTransf(params, {
+                           0.75, 0, 0, 0, -0, 0.94999998807907, 0, 0, 0, -0, 0.93000000715256, 0, 6.1300001144409 + trax, 0, 2.1099998950958 + height, 1,
+                        }),
+                    })
+					table.insert(result.models, {
+                        id = cargo_models[11],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            1.3600000143051+trax, 0,  -0.27500000596046 + height, 1
+                        }),
+                    })
+					table.insert(result.models, {
+                        id = cargo_models[11],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            3.6400001049042+trax, 0,  -0.27500000596046 + height, 1
+                        }),
+                    })
+					table.insert(result.models, {
+                        id = cargo_models[11],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            5.8899998664856 + trax, 0,  -0.27500000596046 + height, 1
+                        }),
+                    })
+					table.insert(result.models, {
+                        id = cargo_models[11],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                             8.1499996185303 + trax, 0,  -0.27500000596046 + height, 1
+                        }),
+                    })
+					table.insert(result.models, {
+                        id = cargo_models[11],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            10.39999961853 + trax, 0,  -0.27500000596046 + height, 1
+                        }),
+                    })
+					table.insert(result.models, {
+                        id = cargo_models[11],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            12.659999847412 + trax, 0,  -0.27500000596046 + height, 1
+                        }),
+                    })
+					table.insert(result.models, {
+                        id = cargo_models[11],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            14.920000076294 + trax, 0,  -0.27500000596046 + height, 1
+                        }),
+                    })
+					table.insert(result.models, {
+                        id = cargo_models[11],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                             17.190000534058 + trax, 0,  -0.27500000596046 + height, 1
+                        }),
+                    })
+					                    result.terrainAlignmentLists = {
+                        {
+                            type = "EQUAL",
+                            faces = {},
+                        },
+                    }
+
+                    result.groundFaces = {
+                        {
+                            face = {
+                                {0.01, -0.01}, {0.01, 0.01},
+                                {-0.01, 0.01}, {-0.01, -0.01}
+                            },
+                            modes = {
+                                { type = "FILL", key = "industry_floor.lua" },
+                            },
+                        },
+                    }
+
+                    return result
+                end
+            end
+			
+			if params.beladenSnps == 3 then
+                local assetValue = assetmodel.getValue(params)
+                if assetValue == "asset/snps719_axbenet.mdl" or
+                   assetValue == "asset/snps719_db1980.mdl" or
+                   assetValue == "asset/snps719_db1994.mdl" or
+                   assetValue == "asset/snps719_sbb.mdl" or
+                   assetValue == "asset/snps719_sbbAlt.mdl" then
+
+                    table.insert(result.models, {
+                        id = assetValue,
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            trax, 0, height, 1
+                        }),
+                    })
+
+                    table.insert(result.models, {
+                        id = cargo_models[3],
+                        transf = constructionutil.rotateTransf(params, {
+                           1.039999961853, 0, 0, 0, -0, 0.98000001907349, 0, 0, 0, -0, 0.98000001907349, 0, 0.10000000149012, -0.019999999552965 + trax, 1.2000000476837 + height, 1,
+                        }),
+                    })
+					table.insert(result.models, {
+                        id = cargo_models[11],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            1.3600000143051+trax, 0,  -0.27500000596046 + height, 1
+                        }),
+                    })
+					table.insert(result.models, {
+                        id = cargo_models[11],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            3.6400001049042+trax, 0,  -0.27500000596046 + height, 1
+                        }),
+                    })
+					table.insert(result.models, {
+                        id = cargo_models[11],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            5.8899998664856 + trax, 0,  -0.27500000596046 + height, 1
+                        }),
+                    })
+					table.insert(result.models, {
+                        id = cargo_models[11],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                             8.1499996185303 + trax, 0,  -0.27500000596046 + height, 1
+                        }),
+                    })
+					table.insert(result.models, {
+                        id = cargo_models[11],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            10.39999961853 + trax, 0,  -0.27500000596046 + height, 1
+                        }),
+                    })
+					table.insert(result.models, {
+                        id = cargo_models[11],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            12.659999847412 + trax, 0,  -0.27500000596046 + height, 1
+                        }),
+                    })
+					table.insert(result.models, {
+                        id = cargo_models[11],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            14.920000076294 + trax, 0,  -0.27500000596046 + height, 1
+                        }),
+                    })
+					table.insert(result.models, {
+                        id = cargo_models[11],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                             17.190000534058 + trax, 0,  -0.27500000596046 + height, 1
+                        }),
+                    })
+					                    result.terrainAlignmentLists = {
+                        {
+                            type = "EQUAL",
+                            faces = {},
+                        },
+                    }
+
+                    result.groundFaces = {
+                        {
+                            face = {
+                                {0.01, -0.01}, {0.01, 0.01},
+                                {-0.01, 0.01}, {-0.01, -0.01}
+                            },
+                            modes = {
+                                { type = "FILL", key = "industry_floor.lua" },
+                            },
+                        },
+                    }
+
+                    return result
+                end
+            end
+			
+            if params.beladenSnps == 4 then
+                local assetValue = assetmodel.getValue(params)
+                if assetValue == "asset/snps719_axbenet.mdl" or
+                   assetValue == "asset/snps719_db1980.mdl" or
+                   assetValue == "asset/snps719_db1994.mdl" or
+                   assetValue == "asset/snps719_sbb.mdl" or
+                   assetValue == "asset/snps719_sbbAlt.mdl" then
+
+                    table.insert(result.models, {
+                        id = assetValue,
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            trax, 0, height, 1
+                        }),
+                    })
+
+                    table.insert(result.models, {
+                        id = cargo_models[4],
+                        transf = constructionutil.rotateTransf(params, {
+                           0.94999998807907, 0, 0, 0, -0, 1, 0, 0, 0, -0, 1.0099999904633, 0, 6.7 + trax, -0.019999999552965 , 1.1499999761581 + height, 1,
+                        }),
+                    })
+					                    table.insert(result.models, {
+                        id = cargo_models[4],
+                        transf = constructionutil.rotateTransf(params, {
+                            0.94999998807907, 0, 0, 0, -0, 1, 0, 0, 0, -0, 1.0099999904633, 0, trax, -0.019999999552965, 1.1499999761581 + height, 1,
+                        }),
+                    })
+					                    table.insert(result.models, {
+                        id = cargo_models[4],
+                        transf = constructionutil.rotateTransf(params, {
+                           0.94999998807907, 0, 0, 0, -0, 1, 0, 0, 0, -0, 1.0199999809265, 0, -6.7  + trax, -0.019999999552965, 1.1299999952316 + height, 1, 
+                        }),
+                    })
+					table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            trax, 0,  0.029999999329448 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -2.2599999904633+trax, 0, 0.029999999329448 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -6.7800002098083 + trax, 0, 0.029999999329448 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -9.039999961853 + trax, 0, 0.029999999329448 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -13.569999694824 + trax, 0, 0.029999999329448 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -15.819999694824 + trax, 0, 0.029999999329448 + height, 1
+                        }),
+                    })
+					
+
+                    result.terrainAlignmentLists = {
+                        {
+                            type = "EQUAL",
+                            faces = {},
+                        },
+                    }
+
+                    result.groundFaces = {
+                        {
+                            face = {
+                                {0.01, -0.01}, {0.01, 0.01},
+                                {-0.01, 0.01}, {-0.01, -0.01}
+                            },
+                            modes = {
+                                { type = "FILL", key = "industry_floor.lua" },
+                            },
+                        },
+                    }
+
+                    return result
+                end
+            end
+			
+if params.beladenSnps == 5 then
+                local assetValue = assetmodel.getValue(params)
+                if assetValue == "asset/snps719_axbenet.mdl" or
+                   assetValue == "asset/snps719_db1980.mdl" or
+                   assetValue == "asset/snps719_db1994.mdl" or
+                   assetValue == "asset/snps719_sbb.mdl" or
+                   assetValue == "asset/snps719_sbbAlt.mdl" then
+
+                    table.insert(result.models, {
+                        id = assetValue,
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            trax, 0, height, 1
+                        }),
+                    })
+
+                    table.insert(result.models, {
+                        id = cargo_models[5],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0, -0, 1, 0, 0, 0, -0, 1.0199999809265, 0,
+                            6.4899997711182 + trax, 0, 1.1799999475479 + height, 1
+                        }),
+                    })
+					                    table.insert(result.models, {
+                        id = cargo_models[5],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0, -0, 1, 0, 0, 0, -0, 1.0199999809265, 0,
+                            trax, 0, 1.1799999475479 + height, 1
+                        }),
+                    })
+					                    table.insert(result.models, {
+                        id = cargo_models[5],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0, -0, 1, 0, 0, 0, -0, 1.0199999809265, 0,
+                            -6.4899997711182 + trax, 0, 1.1799999475479 + height, 1
+                        }),
+                    })
+					table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            trax, 0,  -0.2 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -2.2599999904633+trax, 0, -0.2 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -6.7800002098083 + trax, 0, -0.2 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -9.039999961853 + trax, 0, -0.2 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -13.569999694824 + trax, 0, -0.2 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -15.819999694824 + trax, 0, -0.2 + height, 1
+                        }),
+                    })
+					
+					                    result.terrainAlignmentLists = {
+                        {
+                            type = "EQUAL",
+                            faces = {},
+                        },
+                    }
+
+                    result.groundFaces = {
+                        {
+                            face = {
+                                {0.01, -0.01}, {0.01, 0.01},
+                                {-0.01, 0.01}, {-0.01, -0.01}
+                            },
+                            modes = {
+                                { type = "FILL", key = "industry_floor.lua" },
+                            },
+                        },
+                    }
+
+                    return result
+                end
+            end
+			
+			if params.beladenSnps == 6 then
+                local assetValue = assetmodel.getValue(params)
+                if assetValue == "asset/snps719_axbenet.mdl" or
+                   assetValue == "asset/snps719_db1980.mdl" or
+                   assetValue == "asset/snps719_db1994.mdl" or
+                   assetValue == "asset/snps719_sbb.mdl" or
+                   assetValue == "asset/snps719_sbbAlt.mdl" then
+
+                    table.insert(result.models, {
+                        id = assetValue,
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            trax, 0, height, 1
+                        }),
+                    })
+
+                    table.insert(result.models, {
+                        id = cargo_models[6],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            trax, 0, 1.19 + height, 1
+                        }),
+                    })
+
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            trax, 0, -0.2 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -2.2599999904633+trax, 0, -0.2 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -4.5199999809265 + trax, 0, -0.2 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -6.7800002098083 + trax, 0, -0.2 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -9.039999961853 + trax, 0, -0.2 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -11.300000190735 + trax, 0, -0.2 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -13.569999694824 + trax, 0, -0.2 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -15.819999694824 + trax, 0, -0.2 + height, 1
+                        }),
+                    })
+
+                    result.terrainAlignmentLists = {
+                        {
+                            type = "EQUAL",
+                            faces = {},
+                        },
+                    }
+
+                    result.groundFaces = {
+                        {
+                            face = {
+                                {0.01, -0.01}, {0.01, 0.01},
+                                {-0.01, 0.01}, {-0.01, -0.01}
+                            },
+                            modes = {
+                                { type = "FILL", key = "industry_floor.lua" },
+                            },
+                        },
+                    }
+
+                    return result
+                end
+            end
+			
+			if params.beladenSnps == 7 then
+                local assetValue = assetmodel.getValue(params)
+                if assetValue == "asset/snps719_axbenet.mdl" or
+                   assetValue == "asset/snps719_db1980.mdl" or
+                   assetValue == "asset/snps719_db1994.mdl" or
+                   assetValue == "asset/snps719_sbb.mdl" or
+                   assetValue == "asset/snps719_sbbAlt.mdl" then
+
+                    table.insert(result.models, {
+                        id = assetValue,
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            trax, 0, height, 1
+                        }),
+                    })
+
+                    table.insert(result.models, {
+                        id = cargo_models[7],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            trax, 0, 1.19 + height, 1
+                        }),
+                    })
+
+					table.insert(result.models, {
+                        id = cargo_models[11],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            1.3600000143051+trax, 0,  -0.27500000596046 + height, 1
+                        }),
+                    })
+					table.insert(result.models, {
+                        id = cargo_models[11],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            3.6400001049042+trax, 0,  -0.27500000596046 + height, 1
+                        }),
+                    })
+					table.insert(result.models, {
+                        id = cargo_models[11],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            5.8899998664856 + trax, 0,  -0.27500000596046 + height, 1
+                        }),
+                    })
+					table.insert(result.models, {
+                        id = cargo_models[11],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                             8.1499996185303 + trax, 0,  -0.27500000596046 + height, 1
+                        }),
+                    })
+					table.insert(result.models, {
+                        id = cargo_models[11],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            10.39999961853 + trax, 0,  -0.27500000596046 + height, 1
+                        }),
+                    })
+					table.insert(result.models, {
+                        id = cargo_models[11],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            12.659999847412 + trax, 0,  -0.27500000596046 + height, 1
+                        }),
+                    })
+					table.insert(result.models, {
+                        id = cargo_models[11],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            14.920000076294 + trax, 0,  -0.27500000596046 + height, 1
+                        }),
+                    })
+					table.insert(result.models, {
+                        id = cargo_models[11],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                             17.190000534058 + trax, 0,  -0.27500000596046 + height, 1
+                        }),
+                    })
+
+                    result.terrainAlignmentLists = {
+                        {
+                            type = "EQUAL",
+                            faces = {},
+                        },
+                    }
+
+                    result.groundFaces = {
+                        {
+                            face = {
+                                {0.01, -0.01}, {0.01, 0.01},
+                                {-0.01, 0.01}, {-0.01, -0.01}
+                            },
+                            modes = {
+                                { type = "FILL", key = "industry_floor.lua" },
+                            },
+                        },
+                    }
+
+                    return result
+                end
+            end
+			if params.beladenSnps == 8 then
+                local assetValue = assetmodel.getValue(params)
+                if assetValue == "asset/snps719_axbenet.mdl" or
+                   assetValue == "asset/snps719_db1980.mdl" or
+                   assetValue == "asset/snps719_db1994.mdl" or
+                   assetValue == "asset/snps719_sbb.mdl" or
+                   assetValue == "asset/snps719_sbbAlt.mdl" then
+
+                    table.insert(result.models, {
+                        id = assetValue,
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            trax, 0, height, 1
+                        }),
+                    })
+
+                    table.insert(result.models, {
+                        id = cargo_models[8],
+                        transf = constructionutil.rotateTransf(params, {
+                           0.94999998807907, 0, 0, 0, -0, 1, 0, 0, 0, -0, 1.0099999904633, 0, 6.7 + trax, -0.019999999552965 , 1.1499999761581 + height, 1,
+                        }),
+                    })
+					                    table.insert(result.models, {
+                        id = cargo_models[8],
+                        transf = constructionutil.rotateTransf(params, {
+                            0.94999998807907, 0, 0, 0, -0, 1, 0, 0, 0, -0, 1.0099999904633, 0, trax, -0.019999999552965, 1.1499999761581 + height, 1,
+                        }),
+                    })
+					                    table.insert(result.models, {
+                        id = cargo_models[8],
+                        transf = constructionutil.rotateTransf(params, {
+                           0.94999998807907, 0, 0, 0, -0, 1, 0, 0, 0, -0, 1.0199999809265, 0, -6.7  + trax, -0.019999999552965, 1.1299999952316 + height, 1, 
+                        }),
+                    })
+					table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            trax, 0,  0.029999999329448 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -2.2599999904633+trax, 0, 0.029999999329448 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -6.7800002098083 + trax, 0, 0.029999999329448 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -9.039999961853 + trax, 0, 0.029999999329448 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -13.569999694824 + trax, 0, 0.029999999329448 + height, 1
+                        }),
+                    })
+										table.insert(result.models, {
+                        id = cargo_models[9],
+                        transf = constructionutil.rotateTransf(params, {
+                            1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -15.819999694824 + trax, 0, 0.029999999329448 + height, 1
+                        }),
+                    })
+
+            result.terrainAlignmentLists = {
+                {
+                    type = "EQUAL",
+                    faces = {},
+                },
+            }
+
+            return result
+        end
+		end
+		end
+    }
+end

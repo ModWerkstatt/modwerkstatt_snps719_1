@@ -1,0 +1,70 @@
+function data()
+return {
+	boundingInfo = {
+		bbMax = { 4.1999998092651, 1.1499999761581, 1.5900000333786, },
+		bbMin = { -4.1999998092651, -1.1499999761581, -1, },
+	},
+	collider = {
+		params = {
+			halfExtents = { 8.9001684188843, 6.6236400604248, 1.1953377723694, },
+		},
+		transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+		type = "BOX",
+	},
+	lods = {
+		{
+			node = {
+				children = {
+					{
+						materials = { "vehicle/waggon/snps719/ladung/Holz.mtl", },
+						mesh = "vehicle/waggon/snps719/ladung/holz_lang3_lod0.msh",
+						name = "holz_lang",
+						transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+					},
+				},
+				name = "RootNode",
+				transf = { 1, 0, 0, 0, -0, 1, 0, 0, 0, -0, 1, 0, 0, 0, 0.14000000059605, 1, },
+			},
+			static = false,
+			visibleFrom = 0,
+			visibleTo = 100,
+		},
+		{
+			node = {
+				children = {
+					{
+						materials = { "vehicle/waggon/snps719/ladung/Holz.mtl", },
+						mesh = "vehicle/waggon/snps719/ladung/holz_lang3_lod1.msh",
+						name = "holz_lang",
+						transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+					},
+				},
+				name = "RootNode",
+				transf = { 1, 0, 0, 0, -0, 1, 0, 0, 0, -0, 1, 0, 0, 0, 0.14000000059605, 1, },
+			},
+			static = false,
+			visibleFrom = 100,
+			visibleTo = 500,
+		},
+		{
+			node = {
+				children = {
+					{
+						materials = { "vehicle/waggon/snps719/ladung/Holz.mtl", },
+						mesh = "vehicle/waggon/snps719/ladung/holz_lang3_lod2.msh",
+						name = "holz_lang",
+						transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+					},
+				},
+				name = "RootNode",
+				transf = { 1, 0, 0, 0, -0, 1, 0, 0, 0, -0, 1, 0, 0, 0, 0.14000000059605, 1, },
+			},
+			static = false,
+			visibleFrom = 500,
+			visibleTo = 2481.7351074219,
+		},
+	},
+	metadata = { },
+	version = 1,
+}
+end

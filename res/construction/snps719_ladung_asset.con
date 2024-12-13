@@ -1,0 +1,73 @@
+local ParamBuilder = require "parambuilder_v1_1"
+local positionx = 0
+local model_icons = {
+						"ui/models_20/asset/beladung/cargo1@2x.tga",
+						"ui/models_20/asset/beladung/cargo2@2x.tga",
+						"ui/models_20/asset/beladung/cargo3@2x.tga",
+						"ui/models_20/asset/beladung/cargo4@2x.tga",
+						"ui/models_20/asset/beladung/cargo5@2x.tga",
+						"ui/models_20/asset/beladung/cargo6@2x.tga",
+						"ui/models_20/asset/beladung/cargo7@2x.tga",
+						"ui/models_20/asset/beladung/cargo8@2x.tga",
+						"ui/models_20/asset/beladung/cargo9@2x.tga",
+						"ui/models_20/asset/beladung/cargo10@2x.tga",
+					}
+local model_values = {
+						"asset/Beladung/ladung_stahl.mdl",
+						"asset/Beladung/ladung_holz_4.mdl",
+						"asset/Beladung/ladung_holz_3.mdl",
+						"asset/Beladung/ladung_holz_1.mdl",
+						"asset/Beladung/ladung_holz_2.mdl",
+						"asset/Beladung/ladung_bretter.mdl",
+						"asset/Beladung/ladung_baumaterial_4.mdl",
+						"asset/Beladung/ladung_baumaterial_3.mdl",
+						"asset/Beladung/ladung_baumaterial_1.mdl",
+						"asset/Beladung/ladung_baumaterial_2.mdl",
+					}
+local assetmodel = ParamBuilder.IconButton("type_param", "Snps Cargo", model_icons, model_values, 1, _("asset_desc") )
+
+function data()
+
+return { 
+	type = "ASSET_DEFAULT",
+	description = {
+			name = _("asset_desc"),
+	},
+	availability =
+	{
+			yearFrom = 1950,
+			yearTo = 0,
+	},
+	buildMode = "MULTI",
+	categories = { "goods", "jays_mods" },
+	order = -2046867593,
+	skipCollision = true,
+	autoRemovable = false,
+	params = {
+		assetmodel.params,
+	},
+	updateFn = function(params)
+		local trax = 0
+		local height = 0
+		if params.position == 1 then
+			height = 1.05
+		end
+		
+	local result = { }
+	result.models = { }
+
+	table.insert(result.models, {
+		id = assetmodel.getValue(params),
+		transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, trax, 0, height, 1 },
+	} )	
+
+		result.terrainAlignmentLists = { {
+			type = "EQUAL",
+			faces =  { }
+		} }
+
+		return result
+	end		
+}
+
+end
