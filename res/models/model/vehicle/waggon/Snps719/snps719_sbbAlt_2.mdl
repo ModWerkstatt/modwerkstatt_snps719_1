@@ -850,7 +850,7 @@ return {
 						{
 							cargoEntries = {
 								{
-									capacity = 96,
+									capacity = 88,
 									customCargoModels = {
 										configurations = {
 											{
@@ -870,7 +870,7 @@ return {
 						{
 							cargoEntries = {
 								{
-									capacity = 96,
+									capacity = 88,
 									customCargoModels = {
 										configurations = {
 											{
@@ -891,7 +891,7 @@ return {
 						{
 							cargoEntries = {
 								{
-									capacity = 96,
+									capacity = 88,
 									customCargoModels = {
 										configurations = {
 											{
@@ -911,7 +911,7 @@ return {
 						{
 							cargoEntries = {
 								{
-									capacity = 96,
+									capacity = 88,
 									customCargoModels = {
 										configurations = {
 											{
@@ -924,6 +924,29 @@ return {
 									},
 									seats = { },
 									type = "CONSTRUCTION_MATERIALS",
+								},
+							},
+							toHide = { },
+						},
+												{
+							cargoEntries = {
+								{
+									capacity = 88,
+									customCargoModels = {
+										configurations = {
+											{
+												slotLevels = {
+													{ },
+													{ 7, 30, 31, },
+													{ 5, 6, 27, 28, 33, 34, },
+													{ 5, 6, 7, 27, 28, 30, 31, 33, 34, },
+												},
+											},
+
+										},
+									},
+									seats = { },
+									type = "PLASTIC",
 								},
 							},
 							toHide = { },
