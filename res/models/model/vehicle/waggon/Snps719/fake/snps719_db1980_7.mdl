@@ -840,7 +840,7 @@ return {
 				name = "mw_schwer",
 			},
 			topSpeed = 33.299999237061,
-			weight = 24.5,
+			weight = 87.9,
 		},
 		transportVehicle = {
 			carrier = "RAIL",
