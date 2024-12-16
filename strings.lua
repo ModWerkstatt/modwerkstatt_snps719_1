@@ -26,7 +26,6 @@ return {
 		["assetVariante_9"] = "Wrapped construction material",
 		["snps_fake"] = "Activate Fake Versions?",
 
-
 	},
 	de = {
 
@@ -53,6 +52,7 @@ return {
 		["assetVariante_8"] = "Große Rohre",
 		["assetVariante_9"] = "Baumaterial abgedeckt",
 		["snps_fake"] = "Fake Versionen aktivieren?",
+
 	},
 }
 end
